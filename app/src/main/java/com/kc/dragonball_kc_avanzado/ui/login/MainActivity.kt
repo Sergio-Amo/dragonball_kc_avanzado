@@ -1,4 +1,4 @@
-package com.kc.dragonball_kc_avanzado.login
+package com.kc.dragonball_kc_avanzado.ui.login
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
