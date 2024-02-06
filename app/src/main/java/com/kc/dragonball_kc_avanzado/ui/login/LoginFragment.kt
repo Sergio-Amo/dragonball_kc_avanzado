@@ -73,10 +73,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun successLogin(saved: Boolean) {
-        // TODO: Save token if checkBox checked
-        //  Navigate to Home fragment
         binding.rememberCheckBox.isChecked = saved
-
+        // TODO: NavigateToList
     }
 
     private fun setListeners() {

@@ -4,15 +4,15 @@ import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val preferences: EncryptedPreferences) :
     LocalDataSourceInterface {
-    override fun getToken(): String? {
+    override suspend fun getToken(): String? {
         return preferences.getToken()
     }
 
-    override fun saveToken(token: String) {
+    override suspend fun saveToken(token: String) {
         preferences.saveToken(token)
     }
 
-    override fun deleteToken() {
+    override suspend fun deleteToken() {
         preferences.deleteToken()
     }
 }
