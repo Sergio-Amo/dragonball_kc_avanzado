@@ -10,7 +10,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.kc.dragonball_kc_avanzado.R
 import com.kc.dragonball_kc_avanzado.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -38,8 +37,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun setInitialState() {
-        // Check if there's a token saved
-        binding.rememberCheckBox.isChecked = viewModel.checkForSavedSession()
+        // Check if there's a session token saved
+        lifecycleScope.launch { viewModel.isSavedSession() }
     }
 
     private fun setObservers() {
@@ -50,7 +49,7 @@ class LoginFragment : Fragment() {
                     is LoginViewModel.State.FieldsValidated -> setLoginButtonState(state.valid)
                     is LoginViewModel.State.Error -> showError(state.errorMessage)
                     is LoginViewModel.State.Loading -> showLoading(true)
-                    is LoginViewModel.State.SuccessLogin -> successLogin()
+                    is LoginViewModel.State.SuccessLogin -> successLogin(state.saved)
                 }
             }
         }
@@ -73,18 +72,20 @@ class LoginFragment : Fragment() {
         binding.loadingSpinner.root.isVisible = show
     }
 
-    private fun successLogin() {
-        // TODO: Save token or user password (if encrypted), only user if not
+    private fun successLogin(saved: Boolean) {
+        // TODO: Save token if checkBox checked
         //  Navigate to Home fragment
+        binding.rememberCheckBox.isChecked = saved
+
     }
 
     private fun setListeners() {
-        with (binding) {
+        with(binding) {
             // Login button click
             loginButton.setOnClickListener {
-                val email = editTextTextEmailAddress.text.toString()
-                val password = editTextTextPassword.text.toString()
-                viewModel.loginPressed(email, password)
+                viewModel.loginPressed(
+                    editTextTextEmailAddress.text.toString(), editTextTextPassword.text.toString()
+                )
             }
             //EditText text changed listeners
             editTextTextEmailAddress.doAfterTextChanged { viewModel.onEmailChanged(it.toString()) }
@@ -95,6 +96,4 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
-
 }

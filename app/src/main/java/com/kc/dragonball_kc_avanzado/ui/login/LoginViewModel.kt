@@ -2,19 +2,22 @@ package com.kc.dragonball_kc_avanzado.ui.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.kc.dragonball_kc_avanzado.data.local.EncryptedPreferences
+import androidx.lifecycle.viewModelScope
+import com.kc.dragonball_kc_avanzado.data.Repository
 import com.kc.dragonball_kc_avanzado.utils.Validator
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val sharedPreferences: EncryptedPreferences,
-    private val validator: Validator) :
-    ViewModel() {
+    private val repository: Repository,
+    private val validator: Validator,
+) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.Idle)
     val state: StateFlow<State> = _state
@@ -28,14 +31,19 @@ class LoginViewModel @Inject constructor(
         class FieldsValidated(val valid: Boolean) : State()
         class Error(val errorMessage: String) : State()
         data object Loading : State()
-        data object SuccessLogin : State()
+        class SuccessLogin(val saved: Boolean = false) : State()
     }
 
 
-    fun checkForSavedSession(): Boolean {
-        if (sharedPreferences.getToken().isNullOrEmpty()) return false
-        _state.value = State.SuccessLogin
-        return true
+    suspend fun isSavedSession(): Boolean {
+        //withContext(Dispatchers.IO) {repository.deleteToken()}
+        val value = withContext(Dispatchers.IO) { repository.getToken()}
+        Log.d("TEST_PREFERENCES", value?: "None")
+        val sessionSaved: Boolean = withContext(Dispatchers.IO) {
+            !repository.getToken().isNullOrEmpty()
+        }
+        if (sessionSaved) _state.value = State.SuccessLogin(true)
+        return sessionSaved
     }
 
     fun onEmailChanged(email: String) {
@@ -64,7 +72,7 @@ class LoginViewModel @Inject constructor(
     fun loginPressed(email: String, password: String) {
         //TODO: Do login && if checkBoxChecked saveToken
         // TODO: REMOVE DUMMY TEST
-        sharedPreferences.saveToken("LoremIpsumSitAmet")
+        viewModelScope.launch { repository.saveToken("LoremIpsumSitAmet") }
     }
 
     fun checkBoxStateChanged(checked: Boolean) {
