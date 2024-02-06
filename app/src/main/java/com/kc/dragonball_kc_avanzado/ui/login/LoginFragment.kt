@@ -12,9 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kc.dragonball_kc_avanzado.R
 import com.kc.dragonball_kc_avanzado.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
@@ -36,12 +38,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun setInitialState() {
-        with(binding){
-            // TODO: Load username from shared preferences (or use encrypted and use token instead)
-            // Force validation of fields to set the proper button enable state
-            viewModel.onEmailChanged(editTextTextEmailAddress.text.toString())
-            viewModel.onPasswordChanged(editTextTextPassword.text.toString())
-        }
+        // Check if there's a token saved
+        binding.rememberCheckBox.isChecked = viewModel.checkForSavedSession()
     }
 
     private fun setObservers() {
@@ -52,7 +50,7 @@ class LoginFragment : Fragment() {
                     is LoginViewModel.State.FieldsValidated -> setLoginButtonState(state.valid)
                     is LoginViewModel.State.Error -> showError(state.errorMessage)
                     is LoginViewModel.State.Loading -> showLoading(true)
-                    is LoginViewModel.State.SuccessLogin -> successLogin(state.token)
+                    is LoginViewModel.State.SuccessLogin -> successLogin()
                 }
             }
         }
@@ -75,7 +73,7 @@ class LoginFragment : Fragment() {
         binding.loadingSpinner.root.isVisible = show
     }
 
-    private fun successLogin(token: String) {
+    private fun successLogin() {
         // TODO: Save token or user password (if encrypted), only user if not
         //  Navigate to Home fragment
     }
@@ -86,16 +84,15 @@ class LoginFragment : Fragment() {
             loginButton.setOnClickListener {
                 val email = editTextTextEmailAddress.text.toString()
                 val password = editTextTextPassword.text.toString()
-                //viewModel.doLogin(email, password)
+                viewModel.loginPressed(email, password)
             }
             //EditText text changed listeners
             editTextTextEmailAddress.doAfterTextChanged { viewModel.onEmailChanged(it.toString()) }
             editTextTextPassword.doAfterTextChanged { viewModel.onPasswordChanged(it.toString()) }
-            // Remember user checkbox
-            /*rememberCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                if (!isChecked) LoginRepository.removeEmail(this)
-                LoginRepository.saveCheckBoxState(this, isChecked)
-            }*/
+            // Listen for checkBox checked state
+            rememberCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.checkBoxStateChanged(isChecked)
+            }
         }
     }
 
