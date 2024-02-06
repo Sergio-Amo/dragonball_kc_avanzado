@@ -84,6 +84,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login_button"
         app:backgroundTint="@color/orangeDragonBall"
-        app:cornerRadius="18dp" />
+        app:cornerRadius="18dp"
+        android:enabled="false"/>
 
 </LinearLayout>

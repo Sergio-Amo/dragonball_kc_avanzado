@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val sharedPreferences: EncryptedPreferences) :
+class LoginViewModel @Inject constructor(
+    private val sharedPreferences: EncryptedPreferences,
+    private val validator: Validator) :
     ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.Idle)
@@ -37,7 +39,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: Encrypte
     }
 
     fun onEmailChanged(email: String) {
-        Validator.validateEmail(email).apply {
+        validator.validateEmail(email).apply {
             if (this != isValidEmail) {
                 isValidEmail = this
                 validateFields()
@@ -46,7 +48,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: Encrypte
     }
 
     fun onPasswordChanged(password: String) {
-        Validator.validatePassword(password).apply {
+        validator.validatePassword(password).apply {
             if (this != isValidPassword) {
                 isValidPassword = this
                 validateFields()

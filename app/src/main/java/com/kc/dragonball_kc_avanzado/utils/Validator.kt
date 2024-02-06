@@ -1,6 +1,8 @@
 package com.kc.dragonball_kc_avanzado.utils
 
-object Validator {
+import javax.inject.Inject
+
+class Validator @Inject constructor() {
     /**
      * Check if a given string is a valid email (text@text.1+characters)
      * @param str The mail to be validated.
