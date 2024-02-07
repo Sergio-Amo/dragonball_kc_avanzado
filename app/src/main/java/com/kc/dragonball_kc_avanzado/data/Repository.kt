@@ -1,6 +1,7 @@
 package com.kc.dragonball_kc_avanzado.data
 
 import android.util.Log
+import com.kc.dragonball_kc_avanzado.data.local.InMemoryDataSource
 import com.kc.dragonball_kc_avanzado.data.local.LocalDataSource
 import com.kc.dragonball_kc_avanzado.data.mappers.LocalToListMapper
 import com.kc.dragonball_kc_avanzado.data.mappers.RemoteToLocalMapper
@@ -16,25 +17,27 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localToListMapper: LocalToListMapper,
     private val remoteToLocalMapper: RemoteToLocalMapper,
+    private val inMemoryDataSource: InMemoryDataSource,
 ) {
-    suspend fun getToken(): String? {
-        return localDataSource.getToken()
-    }
+    suspend fun getToken(): String? =
+        inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
 
-    private suspend fun saveToken(token: String) {
-        localDataSource.saveToken(token)
+    private suspend fun saveToken(token: String, persist: Boolean) {
+        if (persist)
+            localDataSource.saveToken(token)
+        else
+            inMemoryDataSource.saveToken(token)
     }
 
     suspend fun deleteToken() {
         localDataSource.deleteToken()
     }
 
-    suspend fun login(email: String, password: String): Boolean {
+    suspend fun login(email: String, password: String, remember: Boolean): Boolean {
         val token = remoteDataSource.login(email, password)
         Log.d("TOKEN", token)
         if (token.isNotEmpty()) {
-            Log.d("TOKEN", token)
-            saveToken(token)
+            saveToken(token, remember)
             return true
         }
         return false

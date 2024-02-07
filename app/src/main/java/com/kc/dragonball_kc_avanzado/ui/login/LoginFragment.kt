@@ -85,7 +85,9 @@ class LoginFragment : Fragment() {
             // Login button click
             loginButton.setOnClickListener {
                 viewModel.loginPressed(
-                    editTextTextEmailAddress.text.toString(), editTextTextPassword.text.toString()
+                    editTextTextEmailAddress.text.toString(),
+                    editTextTextPassword.text.toString(),
+                    rememberCheckBox.isChecked,
                 )
             }
             //EditText text changed listeners

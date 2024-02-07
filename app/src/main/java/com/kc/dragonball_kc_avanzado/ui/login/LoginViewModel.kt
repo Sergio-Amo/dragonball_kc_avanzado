@@ -69,10 +69,10 @@ class LoginViewModel @Inject constructor(
         _state.value = State.FieldsValidated(isValidEmail && isValidPassword)
     }
 
-    fun loginPressed(email: String, password: String) {
+    fun loginPressed(email: String, password: String, remember: Boolean) {
         viewModelScope.launch {
-            if (repository.login(email, password))
-                _state.value = State.SuccessLogin()
+            if (repository.login(email, password, remember))
+                _state.value = State.SuccessLogin(remember)
         }
     }
 
