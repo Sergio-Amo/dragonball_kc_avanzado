@@ -1,5 +1,6 @@
 package com.kc.dragonball_kc_avanzado.data.remote
 
+import com.kc.dragonball_kc_avanzado.data.remote.request.FavoriteRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.HeroRequest
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
@@ -17,5 +18,8 @@ interface DragonBallApi {
 
     @POST("api/heros/all")
     suspend fun getHeroesDetail(@Body request: HeroRequest, @Header("Authorization") credentials: String): List<HeroDetail>
+
+    @POST("api/data/herolike")
+    suspend fun toggleFavorite(@Body request: FavoriteRequest, @Header("Authorization") credentials: String): Unit
 
 }

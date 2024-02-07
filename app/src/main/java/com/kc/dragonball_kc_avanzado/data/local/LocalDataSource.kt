@@ -23,7 +23,17 @@ class LocalDataSource @Inject constructor(
         return dao.getHeroes()
     }
 
+    private suspend fun getHeroById(id: String): HeroLocal {
+        return dao.getHeroById(id)
+    }
+
     suspend fun saveHeroes(heroes: List<HeroLocal>) {
         dao.saveHeroes(heroes)
+    }
+
+    suspend fun toggleFavorite(heroId: String) {
+        val hero = getHeroById(heroId)
+        hero.favorite = !hero.favorite
+        dao.updateHero(hero)
     }
 }

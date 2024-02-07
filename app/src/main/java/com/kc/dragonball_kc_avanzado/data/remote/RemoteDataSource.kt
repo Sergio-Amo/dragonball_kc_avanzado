@@ -1,5 +1,6 @@
 package com.kc.dragonball_kc_avanzado.data.remote
 
+import com.kc.dragonball_kc_avanzado.data.remote.request.FavoriteRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.HeroRequest
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
@@ -14,5 +15,9 @@ class RemoteDataSource @Inject constructor(private val api: DragonBallApi) {
 
     suspend fun getHeroDetail(name: String, token: String): HeroDetail =
         api.getHeroesDetail(HeroRequest(name), token).first()
+
+    suspend fun toggleFavorite(heroId: String, token: String) {
+        api.toggleFavorite(FavoriteRequest(heroId), token)
+    }
 
 }

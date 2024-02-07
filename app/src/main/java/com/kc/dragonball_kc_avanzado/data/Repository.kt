@@ -22,6 +22,8 @@ class Repository @Inject constructor(
     suspend fun getToken(): String? =
         inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
 
+    private suspend fun token() = "Bearer ${getToken()}"
+
     fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isEmpty()
 
     private suspend fun saveToken(token: String, persist: Boolean) {
@@ -49,15 +51,18 @@ class Repository @Inject constructor(
         return if (heroesLocal.isNotEmpty()) {
             localToListMapper.map(heroesLocal)
         } else {
-            val token = "Bearer ${getToken()}"
-            val heroesRemote: List<HeroRemote> = remoteDataSource.getHeroes(token)
+            val heroesRemote: List<HeroRemote> = remoteDataSource.getHeroes(token())
             localDataSource.saveHeroes(remoteToLocalMapper.map(heroesRemote))
             localToListMapper.map(localDataSource.getHeroes())
         }
     }
 
     suspend fun getHeroDetail(name: String): HeroDetail {
-        val token = "Bearer ${getToken()}"
-        return remoteDataSource.getHeroDetail(name, token)
+        return remoteDataSource.getHeroDetail(name, token())
+    }
+
+    suspend fun toggleFavorite(hero: HeroList) {
+        localDataSource.toggleFavorite(hero.id)
+        remoteDataSource.toggleFavorite(hero.id, token())
     }
 }

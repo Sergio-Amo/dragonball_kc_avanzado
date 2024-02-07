@@ -44,4 +44,8 @@ class HeroListFragmentViewModel @Inject constructor(
     }
 
     fun isPersistentSession() = repository.isPersistentSession()
+
+    fun toggleFavorite(hero: HeroList) {
+        viewModelScope.launch(Dispatchers.IO) { repository.toggleFavorite(hero) }
+    }
 }

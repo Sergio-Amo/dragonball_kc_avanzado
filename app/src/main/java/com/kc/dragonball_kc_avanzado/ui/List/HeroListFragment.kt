@@ -22,11 +22,14 @@ class HeroListFragment : Fragment() {
     private lateinit var binding: FragmentHeroListBinding
     private val heroAdapter = HeroListRecyclerViewAdapter { hero, favorite ->
         // TODO: Navigate to detail and add hero
-       /* if (favorite)
+        if (favorite) {
             viewModel.toggleFavorite(hero)
-        else
-            //findNavController().navigate(HeroListFragmentDirections.actionHeroListFragmentToHeroDetailsFragment())*/
-        Log.wtf("WTF", "Hero clicked: ${hero.name} favorite clicked: $favorite")
+            hero.favorite = !hero.favorite
+            updateHero(hero)
+        }
+        //else
+            //findNavController().navigate(HeroListFragmentDirections.actionHeroListFragmentToHeroDetailsFragment())
+        //Log.wtf("WTF", "Hero clicked: ${hero.name} favorite clicked: $favorite")
     }
 
     override fun onCreateView(
