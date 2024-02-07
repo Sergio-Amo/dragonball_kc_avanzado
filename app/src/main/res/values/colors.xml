@@ -6,4 +6,5 @@
     <color name="transparentBlack">#99000000</color>
     <color name="hintColorGray">#FFB9B9B9</color>
     <color name="transparent_white">#AAFFFFFF</color>
+    <color name="translucent_black">#F2000000</color>
 </resources>

@@ -23,6 +23,19 @@
         android:id="@+id/heroListFragment"
         android:name="com.kc.dragonball_kc_avanzado.ui.List.HeroListFragment"
         android:label="HeroListFragment"
-        tools:layout="@layout/fragment_hero_list" />
+        tools:layout="@layout/fragment_hero_list">
+        <action
+            android:id="@+id/action_heroListFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.kc.dragonball_kc_avanzado.ui.details.DetailsFragment"
+        android:label="DetailsFragment"
+        tools:layout="@layout/fragment_details">
+        <argument android:name="hero_name" />
+    </fragment>
 
 </navigation>

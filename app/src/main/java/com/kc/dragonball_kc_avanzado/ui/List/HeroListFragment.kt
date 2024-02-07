@@ -1,7 +1,6 @@
 package com.kc.dragonball_kc_avanzado.ui.List
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kc.dragonball_kc_avanzado.databinding.FragmentHeroListBinding
 import com.kc.dragonball_kc_avanzado.domain.model.HeroList
@@ -21,15 +21,13 @@ class HeroListFragment : Fragment() {
     private val viewModel: HeroListFragmentViewModel by activityViewModels()
     private lateinit var binding: FragmentHeroListBinding
     private val heroAdapter = HeroListRecyclerViewAdapter { hero, favorite ->
-        // TODO: Navigate to detail and add hero
         if (favorite) {
             viewModel.toggleFavorite(hero)
             hero.favorite = !hero.favorite
             updateHero(hero)
         }
-        //else
-            //findNavController().navigate(HeroListFragmentDirections.actionHeroListFragmentToHeroDetailsFragment())
-        //Log.wtf("WTF", "Hero clicked: ${hero.name} favorite clicked: $favorite")
+        else
+            findNavController().navigate(HeroListFragmentDirections.actionHeroListFragmentToDetailsFragment(hero.name))
     }
 
     override fun onCreateView(
@@ -77,7 +75,6 @@ class HeroListFragment : Fragment() {
                     is HeroListFragmentViewModel.State.Error -> showError(state.errorMessage)
                     is HeroListFragmentViewModel.State.Loading -> showLoading(true)
                     is HeroListFragmentViewModel.State.HeroesLoaded -> populateList(state.heroes)
-                    is HeroListFragmentViewModel.State.HeroSelected -> showHeroDetails(state.hero)
                     is HeroListFragmentViewModel.State.HeroUpdated -> updateHero(state.hero)
                 }
             }
@@ -105,9 +102,4 @@ class HeroListFragment : Fragment() {
     private fun updateHero(hero: HeroList) {
         heroAdapter.updateHero(hero)
     }
-
-    private fun showHeroDetails(hero: HeroList) {
-        // TODO: Navigate
-    }
-
 }

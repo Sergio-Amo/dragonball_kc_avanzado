@@ -25,7 +25,6 @@ class HeroListFragmentViewModel @Inject constructor(
         class Error(val errorMessage: String) : State()
         data object Loading : State()
         class HeroesLoaded(val heroes: List<HeroList>) : State()
-        class HeroSelected(val hero: HeroList) : State()
         class HeroUpdated(val hero: HeroList) : State()
     }
 
