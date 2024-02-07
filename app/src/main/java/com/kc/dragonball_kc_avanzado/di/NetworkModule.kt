@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,7 +23,9 @@ class NetworkModuleModule {
     @Provides
     fun providesRetrofit(moshi: Moshi): Retrofit {
         return Retrofit.Builder().baseUrl("https://dragonball.keepcoding.education/")
+            .addConverterFactory(ScalarsConverterFactory.create()) // FFFFFUUUUUUU
             .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+
     }
 
     @Provides
