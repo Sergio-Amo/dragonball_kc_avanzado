@@ -17,7 +17,7 @@ import com.kc.dragonball_kc_avanzado.domain.model.HeroList
 /**
  * [RecyclerView.Adapter] that can display a [HeroList].
  */
-class HeroListRecyclerViewAdapter() :
+class HeroListRecyclerViewAdapter(private val onClick: (HeroList, Boolean) -> Unit) :
     RecyclerView.Adapter<HeroListRecyclerViewAdapter.ViewHolder>() {
 
     private var heroes: List<HeroList> = emptyList()
@@ -62,6 +62,12 @@ class HeroListRecyclerViewAdapter() :
 
         fun addListeners(hero: HeroList) {
             // TODO: Add listener for favorite and hero clicked
+            itemView.setOnClickListener {
+                onClick(hero, false)
+            }
+            heroFavorite.setOnClickListener {
+                onClick(hero, true)
+            }
         }
 
         override fun toString(): String {
