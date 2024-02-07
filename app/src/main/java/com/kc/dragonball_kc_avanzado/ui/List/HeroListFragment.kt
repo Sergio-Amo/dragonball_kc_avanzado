@@ -38,9 +38,11 @@ class HeroListFragment : Fragment() {
     }
 
     private fun setListeners() {
+        // Button to forget session (just removes the token from the Database) and exit
         binding.forget.setOnClickListener {
             viewModel.removeLocalToken()
             Toast.makeText(context, "Session will not be persisted", Toast.LENGTH_LONG).show()
+            activity?.finish()
         }
     }
 

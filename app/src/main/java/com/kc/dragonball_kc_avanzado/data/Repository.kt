@@ -22,7 +22,7 @@ class Repository @Inject constructor(
     suspend fun getToken(): String? =
         inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
 
-    fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isNotEmpty()
+    fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isEmpty()
 
     private suspend fun saveToken(token: String, persist: Boolean) {
         if (persist)
@@ -37,7 +37,6 @@ class Repository @Inject constructor(
 
     suspend fun login(email: String, password: String, remember: Boolean): Boolean {
         val token = remoteDataSource.login(email, password)
-        Log.d("TOKEN", token)
         if (token.isNotEmpty()) {
             saveToken(token, remember)
             return true

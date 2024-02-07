@@ -1,7 +1,9 @@
 package com.kc.dragonball_kc_avanzado.data.local
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class InMemoryDataSource @Inject constructor() {
     private var token: String = ""
 
