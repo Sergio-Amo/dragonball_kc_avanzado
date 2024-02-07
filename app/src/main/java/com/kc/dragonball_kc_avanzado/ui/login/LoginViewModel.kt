@@ -78,6 +78,9 @@ class LoginViewModel @Inject constructor(
 
     fun checkBoxStateChanged(checked: Boolean) {
         checkBoxChecked = checked
+        if (!checked) {
+            viewModelScope.launch { repository.deleteToken() }
+        }
     }
 
 }

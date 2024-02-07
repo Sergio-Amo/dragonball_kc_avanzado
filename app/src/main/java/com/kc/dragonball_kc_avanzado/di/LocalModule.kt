@@ -2,8 +2,11 @@ package com.kc.dragonball_kc_avanzado.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.kc.dragonball_kc_avanzado.data.local.HeroDAO
+import com.kc.dragonball_kc_avanzado.data.local.HeroDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +27,18 @@ class LocalModule {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
         )
+    }
+
+    @Provides
+    fun providesHeroDatabase(@ApplicationContext context: Context): HeroDatabase {
+        return Room.databaseBuilder(
+            context,
+            HeroDatabase::class.java, "hero-database"
+        ).build()
+    }
+
+    @Provides
+    fun providesHeroDao(db: HeroDatabase): HeroDAO {
+        return db.heroDao()
     }
 }
