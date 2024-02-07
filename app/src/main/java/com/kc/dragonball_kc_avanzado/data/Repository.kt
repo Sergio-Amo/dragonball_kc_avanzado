@@ -22,6 +22,8 @@ class Repository @Inject constructor(
     suspend fun getToken(): String? =
         inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
 
+    fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isNotEmpty()
+
     private suspend fun saveToken(token: String, persist: Boolean) {
         if (persist)
             localDataSource.saveToken(token)

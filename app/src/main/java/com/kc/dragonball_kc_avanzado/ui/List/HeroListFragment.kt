@@ -34,11 +34,22 @@ class HeroListFragment : Fragment() {
         configureRecyclerView()
         getHeroes()
         setObservers()
+        setListeners()
+    }
+
+    private fun setListeners() {
+        binding.forget.setOnClickListener {
+            viewModel.removeLocalToken()
+            Toast.makeText(context, "Session will not be persisted", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun configureRecyclerView() {
-        binding.list.layoutManager = LinearLayoutManager(requireContext())
-        binding.list.adapter = heroAdapter
+        with (binding) {
+            forget.isVisible = viewModel.isPersistentSession()
+            list.layoutManager = LinearLayoutManager(requireContext())
+            list.adapter = heroAdapter
+        }
     }
 
     private fun getHeroes() {

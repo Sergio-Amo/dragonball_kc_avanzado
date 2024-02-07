@@ -38,4 +38,10 @@ class HeroListFragmentViewModel @Inject constructor(
             _state.value = State.HeroesLoaded(heroes)
         }
     }
+
+    fun removeLocalToken() {
+        viewModelScope.launch { repository.deleteToken() }
+    }
+
+    fun isPersistentSession() = repository.isPersistentSession()
 }
