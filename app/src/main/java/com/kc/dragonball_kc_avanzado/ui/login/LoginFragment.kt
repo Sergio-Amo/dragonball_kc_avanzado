@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
         // Set remember session checkmark as checked
         // (I'll permit going back and uncheck to clear the token)
         binding.rememberCheckBox.isChecked = saved
-        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHeroListFragment2())
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHeroListFragment())
     }
 
     private fun setListeners() {
