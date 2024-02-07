@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/gokubg" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/list"
+    android:name="com.kc.dragonball_kc_avanzado.ui.List.HeroListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".ui.List.HeroListFragment"
+    tools:listitem="@layout/hero_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
