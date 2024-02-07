@@ -54,7 +54,7 @@ class HeroListRecyclerViewAdapter() :
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(heroImage)
             // Favorite status
-            heroImage.colorFilter = if (hero.favorite)
+            heroFavorite.colorFilter = if (hero.favorite)
                 ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
             else
                 ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })

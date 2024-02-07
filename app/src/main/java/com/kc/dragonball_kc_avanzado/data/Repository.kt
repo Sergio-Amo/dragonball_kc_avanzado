@@ -45,13 +45,15 @@ class Repository @Inject constructor(
         return if (heroesLocal.isNotEmpty()) {
             localToListMapper.map(heroesLocal)
         } else {
-            val heroesRemote: List<HeroRemote> = remoteDataSource.getHeroes(getToken() ?: "")
+            val token = "Bearer ${getToken()}"
+            val heroesRemote: List<HeroRemote> = remoteDataSource.getHeroes(token)
             localDataSource.saveHeroes(remoteToLocalMapper.map(heroesRemote))
             localToListMapper.map(localDataSource.getHeroes())
         }
     }
 
     suspend fun getHeroDetail(name: String): HeroDetail {
-        return remoteDataSource.getHeroDetail(name, getToken() ?: "")
+        val token = "Bearer ${getToken()}"
+        return remoteDataSource.getHeroDetail(name, token)
     }
 }

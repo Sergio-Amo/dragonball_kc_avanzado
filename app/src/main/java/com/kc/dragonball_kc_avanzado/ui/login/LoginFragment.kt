@@ -10,6 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.kc.dragonball_kc_avanzado.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -73,8 +74,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun successLogin(saved: Boolean) {
+        // Set remember session checkmark as checked
+        // (I'll permit going back and uncheck to clear the token)
         binding.rememberCheckBox.isChecked = saved
-        // TODO: NavigateToList
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHeroListFragment2())
     }
 
     private fun setListeners() {
