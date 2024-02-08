@@ -1,10 +1,9 @@
 package com.kc.dragonball_kc_avanzado.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kc.dragonball_kc_avanzado.data.Repository
-import com.kc.dragonball_kc_avanzado.utils.Validator
+import com.kc.dragonball_kc_avanzado.utils.FieldValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: Repository,
-    private val validator: Validator,
+    private val fieldValidator: FieldValidator,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.Idle)
@@ -44,7 +43,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onEmailChanged(email: String) {
-        validator.validateEmail(email).apply {
+        fieldValidator.validateEmail(email).apply {
             if (this != isValidEmail) {
                 isValidEmail = this
                 validateFields()
@@ -53,7 +52,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onPasswordChanged(password: String) {
-        validator.validatePassword(password).apply {
+        fieldValidator.validatePassword(password).apply {
             if (this != isValidPassword) {
                 isValidPassword = this
                 validateFields()
