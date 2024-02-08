@@ -4,25 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import com.kc.dragonball_kc_avanzado.data.Repository
+import com.kc.dragonball_kc_avanzado.data.mappers.HeroLocationsRemoteToHeroLocationMapper
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocation
-import com.kc.dragonball_kc_avanzado.utils.CoordinateValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Error
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val repository: Repository,
-    private val coordinateValidator: CoordinateValidator,
+    private val heroLocationsRemoteToHeroLocationMapper: HeroLocationsRemoteToHeroLocationMapper,
 ) : ViewModel() {
 
     private val _hero = MutableLiveData<HeroDetail>()
@@ -50,27 +45,12 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun getHeroLocation() {
+        val id: String = hero.value?.id ?: return
         viewModelScope.launch {
-            hero.value?.let {
-                val rawLocations = withContext(Dispatchers.IO) {
-                    repository.getLocations(it.id)
-                }
-                val filteredLocation = rawLocations.filter {
-                    try {
-                        coordinateValidator.validateLatLng(
-                            LatLng(it.latitud.toDouble(), it.longitud.toDouble())
-                        )
-                    } catch (err: Error) {
-                        false
-                    }
-                }
-                _locations.value = filteredLocation.map {
-                    HeroLocation(
-                        LatLng(it.latitud.toDouble(), it.longitud.toDouble()),
-                        LocalDateTime.parse(it.dateShow, DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'"))
-                    )
-                }
+            val raw = withContext(Dispatchers.IO) {
+                hero.value?.run { repository.getLocations(id) }
             }
+            raw?.let { _locations.value = heroLocationsRemoteToHeroLocationMapper.map(it) }
         }
     }
 }

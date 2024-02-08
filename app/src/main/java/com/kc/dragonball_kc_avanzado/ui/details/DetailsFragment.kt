@@ -3,6 +3,7 @@ package com.kc.dragonball_kc_avanzado.ui.details
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +17,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kc.dragonball_kc_avanzado.R
 import com.kc.dragonball_kc_avanzado.databinding.FragmentDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment(), OnMapReadyCallback {
 
-    private var _binding: FragmentDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentDetailsBinding
     private val viewModel: DetailsViewModel by activityViewModels()
 
     private lateinit var gMap: GoogleMap
+    private var heroReady = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,19 +45,20 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
-        viewModel.getHeroLocation()
 
+        // Listen for locations
         viewModel.locations.observe(viewLifecycleOwner) {
-            it.sortedBy { location -> location.dateShow }.reversed()
+            //it.sortedBy { location -> location.dateShow }.reversed()
             it.forEach { location ->
                 gMap.addMarker(
-                    MarkerOptions().position(location.latLng)
+                    MarkerOptions()
+                        .position(location.latLng)
                         .title("${location.dateShow.toLocalDate()}, ${location.dateShow.toLocalTime()}")
                 )
             }
@@ -69,10 +73,12 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
             binding.root.requestDisallowInterceptTouchEvent(false)
         }
 
+        getLocationIfReady()
     }
 
     private fun setObservers() {
         viewModel.hero.observe(viewLifecycleOwner) {
+
             with(binding) {
                 // Name & Description
                 heroName.text = it.name
@@ -85,6 +91,15 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
                     if (it.favorite) ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
                     else ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
             }
+            heroReady = true
+            getLocationIfReady()
+        }
+    }
+
+    private fun getLocationIfReady() {
+        if (this::gMap.isInitialized && heroReady) {
+            Log.wtf("WTF", "locationCalled!")
+            viewModel.getHeroLocation()
         }
     }
 
