@@ -7,6 +7,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     // Secrets
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    // Navigation - SafeArgs
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -38,9 +39,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    viewBinding {
-        enable = true
     }
     buildFeatures {
         viewBinding = true

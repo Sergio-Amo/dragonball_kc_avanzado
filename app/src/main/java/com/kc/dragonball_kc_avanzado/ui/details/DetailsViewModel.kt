@@ -50,7 +50,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun getHeroLocation() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             hero.value?.let {
                 val rawLocations = withContext(Dispatchers.IO) {
                     repository.getLocations(it.id)
