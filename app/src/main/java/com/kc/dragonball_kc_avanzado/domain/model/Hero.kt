@@ -3,7 +3,9 @@ package com.kc.dragonball_kc_avanzado.domain.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+import com.google.android.gms.maps.model.LatLng
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 @Entity(tableName = "heroes")
@@ -37,4 +39,15 @@ data class HeroDetail(
     val photo: String,
     var favorite: Boolean,
     val description: String,
+)
+
+data class HeroLocationsRemote(
+    val longitud: String,
+    val dateShow: String,
+    val latitud: String,
+)
+
+data class HeroLocation(
+    val latLng: LatLng,
+    val dateShow: LocalDateTime,
 )

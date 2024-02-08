@@ -9,6 +9,8 @@ import com.kc.dragonball_kc_avanzado.data.remote.RemoteDataSource
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 import com.kc.dragonball_kc_avanzado.domain.model.HeroList
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocal
+import com.kc.dragonball_kc_avanzado.domain.model.HeroLocation
+import com.kc.dragonball_kc_avanzado.domain.model.HeroLocationsRemote
 import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
 import javax.inject.Inject
 
@@ -73,4 +75,8 @@ class Repository @Inject constructor(
     suspend fun deleteLocalCache() {
         localDataSource.deleteHeroes()
     }
+
+    suspend fun getLocations(id: String): List<HeroLocationsRemote> =
+        remoteDataSource.getLocations(id, token())
+
 }

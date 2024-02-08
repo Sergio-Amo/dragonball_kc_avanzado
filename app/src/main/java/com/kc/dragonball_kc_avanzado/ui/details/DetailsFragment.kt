@@ -9,14 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.MarkerOptions
 import com.kc.dragonball_kc_avanzado.R
 import com.kc.dragonball_kc_avanzado.databinding.FragmentDetailsBinding
-import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentDetailsBinding
     private val viewModel: DetailsViewModel by activityViewModels()
+
+    private lateinit var gMap: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +36,13 @@ class DetailsFragment : Fragment() {
         arguments?.let {
             getHero(DetailsFragmentArgs.fromBundle(it).heroName)
         }
-
-        //setInitialState()
         setObservers()
         setListeners()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        gMap = googleMap
+        viewModel.getHeroLocation()
     }
 
     private fun setObservers() {
@@ -45,17 +52,25 @@ class DetailsFragment : Fragment() {
                 heroName.text = it.name
                 heroDescription.text = it.description
                 // Image
-                Glide
-                    .with(root)
-                    .load(it.photo)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .into(heroImage)
+                Glide.with(root).load(it.photo).centerCrop()
+                    .placeholder(R.drawable.ic_launcher_foreground).into(heroImage)
                 // Favorite status
-                favorite.colorFilter = if (it.favorite)
-                    ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
-                else
-                    ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
+                favorite.colorFilter =
+                    if (it.favorite)
+                        ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
+                    else
+                        ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
+            }
+        }
+
+        viewModel.locations.observe(viewLifecycleOwner) {
+            it.sortedBy { location -> location.dateShow }.reversed()
+            it.forEach { location ->
+                gMap.addMarker(
+                    MarkerOptions()
+                        .position(location.latLng)
+                        .title("${location.dateShow.toLocalDate()}, ${location.dateShow.toLocalTime()}")
+                )
             }
         }
     }
