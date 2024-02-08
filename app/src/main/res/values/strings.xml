@@ -7,4 +7,5 @@
     <string name="hero_image">Hero image</string>
     <string name="forget">Forget</string>
     <string name="make_favorite">Make favorite</string>
+    <string name="hero_locations_in_map">Hero locations in map</string>
 </resources>
