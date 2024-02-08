@@ -1,8 +1,8 @@
 package com.kc.dragonball_kc_avanzado.data
 
-import android.util.Log
 import com.kc.dragonball_kc_avanzado.data.local.InMemoryDataSource
 import com.kc.dragonball_kc_avanzado.data.local.LocalDataSource
+import com.kc.dragonball_kc_avanzado.data.mappers.LocalToDetailMapper
 import com.kc.dragonball_kc_avanzado.data.mappers.LocalToListMapper
 import com.kc.dragonball_kc_avanzado.data.mappers.RemoteToLocalMapper
 import com.kc.dragonball_kc_avanzado.data.remote.RemoteDataSource
@@ -18,6 +18,7 @@ class Repository @Inject constructor(
     private val localToListMapper: LocalToListMapper,
     private val remoteToLocalMapper: RemoteToLocalMapper,
     private val inMemoryDataSource: InMemoryDataSource,
+    private val localToDetailMapper: LocalToDetailMapper,
 ) {
     suspend fun getToken(): String? =
         inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
@@ -27,10 +28,8 @@ class Repository @Inject constructor(
     fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isEmpty()
 
     private suspend fun saveToken(token: String, persist: Boolean) {
-        if (persist)
-            localDataSource.saveToken(token)
-        else
-            inMemoryDataSource.saveToken(token)
+        if (persist) localDataSource.saveToken(token)
+        else inMemoryDataSource.saveToken(token)
     }
 
     suspend fun deleteToken() {
@@ -58,6 +57,11 @@ class Repository @Inject constructor(
     }
 
     suspend fun getHeroDetail(name: String): HeroDetail {
+        val heroesLocal: List<HeroLocal> = localDataSource.getHeroes()
+        val heroLocal = heroesLocal.find { it.name == name }
+        heroLocal?.let {
+            return localToDetailMapper.map(listOf(it)).first()
+        }
         return remoteDataSource.getHeroDetail(name, token())
     }
 
