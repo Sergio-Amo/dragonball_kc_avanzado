@@ -1,4 +1,4 @@
-package com.kc.dragonball_kc_avanzado.ui.List
+package com.kc.dragonball_kc_avanzado.ui.list
 
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -61,7 +61,6 @@ class HeroListRecyclerViewAdapter(private val onClick: (HeroList, Boolean) -> Un
         }
 
         fun addListeners(hero: HeroList) {
-            // TODO: Add listener for favorite and hero clicked
             itemView.setOnClickListener {
                 onClick(hero, false)
             }

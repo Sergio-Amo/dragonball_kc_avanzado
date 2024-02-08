@@ -1,4 +1,4 @@
-package com.kc.dragonball_kc_avanzado.ui.List
+package com.kc.dragonball_kc_avanzado.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.kc.dragonball_kc_avanzado.ui.List
+package com.kc.dragonball_kc_avanzado.ui.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,7 +35,7 @@ class HeroListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentHeroListBinding.inflate(inflater)
         return binding.root
     }

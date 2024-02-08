@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.List.HeroListFragment"
+        tools:context=".ui.list.HeroListFragment"
         tools:listitem="@layout/hero_item" />
 
     <include

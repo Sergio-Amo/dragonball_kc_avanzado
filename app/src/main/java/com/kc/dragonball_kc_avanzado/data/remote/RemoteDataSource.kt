@@ -1,14 +1,12 @@
 package com.kc.dragonball_kc_avanzado.data.remote
 
 import android.content.Context
-import android.net.http.NetworkException
 import android.util.Log
 import android.widget.Toast
 import com.kc.dragonball_kc_avanzado.data.remote.request.FavoriteRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.HeroRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.LocationsRequest
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
-import com.kc.dragonball_kc_avanzado.domain.model.HeroLocation
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocationsRemote
 import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -16,7 +14,6 @@ import okhttp3.Credentials
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 class RemoteDataSource @Inject constructor(private val api: DragonBallApi, @ApplicationContext private val context: Context) {
     suspend fun login(email: String, password: String): String {

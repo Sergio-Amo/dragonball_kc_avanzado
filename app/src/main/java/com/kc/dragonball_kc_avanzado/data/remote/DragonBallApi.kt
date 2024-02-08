@@ -4,7 +4,6 @@ import com.kc.dragonball_kc_avanzado.data.remote.request.FavoriteRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.HeroRequest
 import com.kc.dragonball_kc_avanzado.data.remote.request.LocationsRequest
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
-import com.kc.dragonball_kc_avanzado.domain.model.HeroLocation
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocationsRemote
 import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
 import retrofit2.http.Body
@@ -23,7 +22,7 @@ interface DragonBallApi {
     suspend fun getHeroesDetail(@Body request: HeroRequest, @Header("Authorization") credentials: String): List<HeroDetail>
 
     @POST("api/data/herolike")
-    suspend fun toggleFavorite(@Body request: FavoriteRequest, @Header("Authorization") credentials: String): Unit
+    suspend fun toggleFavorite(@Body request: FavoriteRequest, @Header("Authorization") credentials: String)
 
     @POST("api/heros/locations")
     suspend fun getLocations(@Body request: LocationsRequest, @Header("Authorization") credentials: String): List<HeroLocationsRemote>

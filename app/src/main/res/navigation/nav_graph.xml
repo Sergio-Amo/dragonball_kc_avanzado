@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/heroListFragment"
-        android:name="com.kc.dragonball_kc_avanzado.ui.List.HeroListFragment"
+        android:name="com.kc.dragonball_kc_avanzado.ui.list.HeroListFragment"
         android:label="HeroListFragment"
         tools:layout="@layout/fragment_hero_list">
         <action

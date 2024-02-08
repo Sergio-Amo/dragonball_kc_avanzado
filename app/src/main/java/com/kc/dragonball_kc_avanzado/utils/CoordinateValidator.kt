@@ -7,8 +7,7 @@ class CoordinateValidator @Inject constructor() {
     fun validateLatLng(coordinates: LatLng): Boolean {
         with(coordinates) {
             return if (latitude < -90 || latitude > 90) false
-            else if (longitude < -180 || longitude > 180) false
-            else true
+            else !(longitude < -180 || longitude > 180)
         }
     }
 }

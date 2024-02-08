@@ -44,7 +44,7 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
