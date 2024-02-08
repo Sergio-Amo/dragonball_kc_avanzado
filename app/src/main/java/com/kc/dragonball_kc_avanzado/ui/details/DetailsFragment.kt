@@ -54,7 +54,7 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
 
         // Listen for locations
         viewModel.locations.observe(viewLifecycleOwner) {
-            //it.sortedBy { location -> location.dateShow }.reversed()
+            it.sortedBy { location -> location.dateShow }.reversed()
             it.forEach { location ->
                 gMap.addMarker(
                     MarkerOptions()
@@ -62,7 +62,8 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
                         .title("${location.dateShow.toLocalDate()}, ${location.dateShow.toLocalTime()}")
                 )
             }
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(it.first().latLng))
+            if (!it.isNullOrEmpty())
+                gMap.moveCamera(CameraUpdateFactory.newLatLng(it.first().latLng))
         }
 
         // Fix map inside scrollView
