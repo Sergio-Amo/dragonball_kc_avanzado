@@ -27,7 +27,8 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         arguments?.let {
@@ -52,14 +53,22 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
         viewModel.locations.observe(viewLifecycleOwner) {
             it.sortedBy { location -> location.dateShow }.reversed()
             it.forEach { location ->
-                gMap?.addMarker(
-                    MarkerOptions()
-                        .position(location.latLng)
+                gMap.addMarker(
+                    MarkerOptions().position(location.latLng)
                         .title("${location.dateShow.toLocalDate()}, ${location.dateShow.toLocalTime()}")
                 )
             }
-            gMap?.moveCamera(CameraUpdateFactory.newLatLng(it.first().latLng))
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(it.first().latLng))
         }
+
+        // Fix map inside scrollView
+        gMap.setOnCameraMoveStartedListener {
+            binding.root.requestDisallowInterceptTouchEvent(true)
+        }
+        gMap.setOnCameraIdleListener {
+            binding.root.requestDisallowInterceptTouchEvent(false)
+        }
+
     }
 
     private fun setObservers() {
@@ -73,10 +82,8 @@ class DetailsFragment : Fragment(), OnMapReadyCallback {
                     .placeholder(R.drawable.ic_launcher_foreground).into(heroImage)
                 // Favorite status
                 favorite.colorFilter =
-                    if (it.favorite)
-                        ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
-                    else
-                        ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
+                    if (it.favorite) ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(1f) })
+                    else ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
             }
         }
     }
