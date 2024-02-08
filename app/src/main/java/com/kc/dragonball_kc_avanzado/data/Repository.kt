@@ -65,8 +65,8 @@ class Repository @Inject constructor(
         return remoteDataSource.getHeroDetail(name, token())
     }
 
-    suspend fun toggleFavorite(hero: HeroList) {
-        localDataSource.toggleFavorite(hero.id)
-        remoteDataSource.toggleFavorite(hero.id, token())
+    suspend fun toggleFavorite(heroId: String) {
+        localDataSource.toggleFavorite(heroId)
+        remoteDataSource.toggleFavorite(heroId, token())
     }
 }

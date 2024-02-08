@@ -17,7 +17,6 @@ class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private val viewModel: DetailsViewModel by activityViewModels()
-    lateinit var hero: HeroDetail
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +35,7 @@ class DetailsFragment : Fragment() {
 
         //setInitialState()
         setObservers()
-        //setListeners()
+        setListeners()
     }
 
     private fun setObservers() {
@@ -58,6 +57,12 @@ class DetailsFragment : Fragment() {
                 else
                     ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
             }
+        }
+    }
+
+    private fun setListeners() {
+        binding.favorite.setOnClickListener {
+            viewModel.toggleFavorite()
         }
     }
 

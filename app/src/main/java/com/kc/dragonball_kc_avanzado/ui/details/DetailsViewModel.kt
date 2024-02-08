@@ -20,13 +20,21 @@ class DetailsViewModel @Inject constructor(
     private val _hero = MutableLiveData<HeroDetail>()
     val hero: LiveData<HeroDetail> get() = _hero
 
-    fun getHero(name: String){
+    fun getHero(name: String) {
         viewModelScope.launch {
-            val hero = withContext(Dispatchers.IO){
+            val hero = withContext(Dispatchers.IO) {
                 repository.getHeroDetail(name)
             }
 
             _hero.value = hero
+        }
+    }
+
+    fun toggleFavorite() {
+        _hero.value?.let {
+            it.favorite = !it.favorite
+            _hero.value = it
+            viewModelScope.launch(Dispatchers.IO) { repository.toggleFavorite(it.id) }
         }
     }
 }
