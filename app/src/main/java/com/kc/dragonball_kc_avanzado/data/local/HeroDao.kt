@@ -20,4 +20,7 @@ interface HeroDAO {
     @Update
     fun updateHero(hero: HeroLocal)
 
+    @Query("DELETE FROM heroes")
+    suspend fun deleteHeroes()
+
 }

@@ -39,7 +39,10 @@ class HeroListFragmentViewModel @Inject constructor(
     }
 
     fun removeLocalToken() {
-        viewModelScope.launch { repository.deleteToken() }
+        viewModelScope.launch {
+            repository.deleteToken()
+            repository.deleteLocalCache()
+        }
     }
 
     fun isPersistentSession() = repository.isPersistentSession()

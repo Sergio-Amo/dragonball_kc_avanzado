@@ -69,4 +69,8 @@ class Repository @Inject constructor(
         localDataSource.toggleFavorite(heroId)
         remoteDataSource.toggleFavorite(heroId, token())
     }
+
+    suspend fun deleteLocalCache() {
+        localDataSource.deleteHeroes()
+    }
 }

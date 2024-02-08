@@ -36,9 +36,6 @@ class LoginViewModel @Inject constructor(
 
 
     suspend fun isSavedSession(): Boolean {
-        //withContext(Dispatchers.IO) {repository.deleteToken()}
-        //val value = withContext(Dispatchers.IO) { repository.getToken() }
-        //Log.d("TEST_PREFERENCES", value ?: "None")
         val sessionSaved: Boolean = withContext(Dispatchers.IO) {
             !repository.getToken().isNullOrEmpty()
         }

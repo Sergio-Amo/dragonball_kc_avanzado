@@ -36,4 +36,8 @@ class LocalDataSource @Inject constructor(
         hero.favorite = !hero.favorite
         dao.updateHero(hero)
     }
+
+    suspend fun deleteHeroes() {
+        dao.deleteHeroes()
+    }
 }

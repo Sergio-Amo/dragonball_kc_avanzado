@@ -47,10 +47,10 @@ class HeroListFragment : Fragment() {
     }
 
     private fun setListeners() {
-        // Button to forget session (just removes the token from the Database) and exit
+        // Button to clear all stored content, both token and cached heroes will be removed
         binding.forget.setOnClickListener {
             viewModel.removeLocalToken()
-            Toast.makeText(context, "Session will not be persisted", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "All local data has been removed", Toast.LENGTH_LONG).show()
             activity?.finish()
         }
     }
