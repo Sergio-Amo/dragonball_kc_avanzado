@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
+import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime
 data class HeroLocal(
     @PrimaryKey @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "photo") val photo: String,
+    @ColumnInfo(name = "photo") val photo: URL,
     @ColumnInfo(name = "favorite") var favorite: Boolean,
     @ColumnInfo(name = "description") val description: String,
 )
@@ -29,14 +30,14 @@ data class HeroRemote(
 data class HeroList(
     val id: String,
     val name: String,
-    val photo: String,
+    val photo: URL,
     var favorite: Boolean,
 )
 
 data class HeroDetail(
     val id: String,
     val name: String,
-    val photo: String,
+    val photo: URL,
     var favorite: Boolean,
     val description: String,
 )
