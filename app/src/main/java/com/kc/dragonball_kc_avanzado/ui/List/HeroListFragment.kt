@@ -13,9 +13,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kc.dragonball_kc_avanzado.databinding.FragmentHeroListBinding
 import com.kc.dragonball_kc_avanzado.domain.model.HeroList
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HeroListFragment : Fragment() {
 
     private val viewModel: HeroListFragmentViewModel by activityViewModels()
