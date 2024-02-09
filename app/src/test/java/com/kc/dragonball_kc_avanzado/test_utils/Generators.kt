@@ -1,6 +1,5 @@
 package com.kc.dragonball_kc_avanzado.test_utils
 
-import com.google.android.gms.maps.model.LatLng
 import com.kc.dragonball_kc_avanzado.domain.model.HeroDetail
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocal
 import com.kc.dragonball_kc_avanzado.domain.model.HeroLocationsRemote
