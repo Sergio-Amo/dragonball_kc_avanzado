@@ -1,7 +1,7 @@
 package com.kc.dragonball_kc_avanzado.data
 
 import com.kc.dragonball_kc_avanzado.data.local.InMemoryDataSource
-import com.kc.dragonball_kc_avanzado.data.local.LocalDataSource
+import com.kc.dragonball_kc_avanzado.data.local.LocalDataSourceInterface
 import com.kc.dragonball_kc_avanzado.data.mappers.LocalToDetailMapper
 import com.kc.dragonball_kc_avanzado.data.mappers.LocalToListMapper
 import com.kc.dragonball_kc_avanzado.data.mappers.RemoteToLocalMapper
@@ -14,7 +14,7 @@ import com.kc.dragonball_kc_avanzado.domain.model.HeroRemote
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    private val localDataSource: LocalDataSource,
+    private val localDataSource: LocalDataSourceInterface,
     private val remoteDataSource: RemoteDataSource,
     private val localToListMapper: LocalToListMapper,
     private val remoteToLocalMapper: RemoteToLocalMapper,
@@ -24,11 +24,11 @@ class Repository @Inject constructor(
     suspend fun getToken(): String? =
         inMemoryDataSource.getToken().ifEmpty { localDataSource.getToken() }
 
-    private suspend fun token() = "Bearer ${getToken()}"
+    suspend fun token() = "Bearer ${getToken()}"
 
     fun isPersistentSession(): Boolean = inMemoryDataSource.getToken().isEmpty()
 
-    private suspend fun saveToken(token: String, persist: Boolean) {
+    suspend fun saveToken(token: String, persist: Boolean) {
         if (persist) localDataSource.saveToken(token)
         else inMemoryDataSource.saveToken(token)
     }

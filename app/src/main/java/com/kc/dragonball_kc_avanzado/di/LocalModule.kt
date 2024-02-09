@@ -7,6 +7,8 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.kc.dragonball_kc_avanzado.data.local.HeroDAO
 import com.kc.dragonball_kc_avanzado.data.local.HeroDatabase
+import com.kc.dragonball_kc_avanzado.data.local.LocalDataSource
+import com.kc.dragonball_kc_avanzado.data.local.LocalDataSourceInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,4 +43,8 @@ class LocalModule {
     fun providesHeroDao(db: HeroDatabase): HeroDAO {
         return db.heroDao()
     }
+
+    @Provides
+    fun providesLocalDataSourceInterface(source: LocalDataSource): LocalDataSourceInterface =
+        source
 }

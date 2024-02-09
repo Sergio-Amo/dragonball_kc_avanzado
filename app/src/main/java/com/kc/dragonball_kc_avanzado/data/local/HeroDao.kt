@@ -9,16 +9,16 @@ import com.kc.dragonball_kc_avanzado.domain.model.HeroLocal
 @Dao
 interface HeroDAO {
     @Query("SELECT * FROM heroes")
-    fun getHeroes(): List<HeroLocal>
+    suspend fun getHeroes(): List<HeroLocal>
 
     @Query("SELECT * FROM heroes WHERE id = :id LIMIT 1")
-    fun getHeroById(id: String): HeroLocal
+    suspend fun getHeroById(id: String): HeroLocal
 
     @Insert
-    fun saveHeroes(heroes: List<HeroLocal>)
+    suspend fun saveHeroes(heroes: List<HeroLocal>)
 
     @Update
-    fun updateHero(hero: HeroLocal)
+    suspend fun updateHero(hero: HeroLocal)
 
     @Query("DELETE FROM heroes")
     suspend fun deleteHeroes()
